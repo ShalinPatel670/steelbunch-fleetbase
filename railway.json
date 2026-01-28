@@ -3,7 +3,8 @@
   "build": {
     "builder": "DOCKERFILE",
     "dockerfilePath": "docker/Dockerfile",
-    "dockerTarget": "app-release"
+    "dockerTarget": "app-release",
+    "watchPatterns": ["/**"]
   },
   "deploy": {
     "healthcheckPath": "/health",

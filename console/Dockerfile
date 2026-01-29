@@ -50,5 +50,9 @@ EXPOSE 4200
 # Use custom nginx.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Start Nginx server
-CMD ["nginx", "-g", "daemon off;"]
+# Copy and setup entrypoint script for runtime config injection
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+# Use entrypoint to generate config at runtime
+ENTRYPOINT ["/docker-entrypoint.sh"]

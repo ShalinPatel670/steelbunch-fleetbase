@@ -10,7 +10,8 @@
       "Bash(git submodule:*)",
       "Bash(dir:*)",
       "Bash(ls \"C:\\\\Users\\\\25sha\\\\OneDrive\\\\Documents\\\\GitHub\\\\steelbunch-fleetbase\\\\.apm\\\\Memory\\\\Phase_01_Fleetbase_Deployment\"\" 2>/dev/null || dir \"C:Users25shaOneDriveDocumentsGitHubsteelbunch-fleetbase.apmMemoryPhase_01_Fleetbase_Deployment\"\")",
-      "Bash(git mv:*)"
+      "Bash(git mv:*)",
+      "WebFetch(domain:raw.githubusercontent.com)"
     ]
   }
 }

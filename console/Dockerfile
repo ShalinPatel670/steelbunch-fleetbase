@@ -10,6 +10,10 @@ ENV PNPM_HOME=/root/.pnpm
 
 # Set environment
 ARG ENVIRONMENT=production
+ARG DISABLE_RUNTIME_CONFIG=false
+
+# Set build-time environment variables for Ember
+ENV DISABLE_RUNTIME_CONFIG=$DISABLE_RUNTIME_CONFIG
 
 # Add the pnpm global bin to the PATH
 ENV PATH=/root/.pnpm/bin:$PATH
@@ -35,8 +39,8 @@ RUN pnpm install
 # Copy the console directory contents into the container at /console
 COPY . .
 
-# Build the application
-RUN pnpm build --environment $ENVIRONMENT
+# Build the application with runtime config enabled
+RUN DISABLE_RUNTIME_CONFIG=false pnpm build --environment $ENVIRONMENT
 
 # ---- Serve Stage ----
 FROM nginx:alpine

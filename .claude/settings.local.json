@@ -5,7 +5,9 @@
       "Bash(find:*)",
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\25sha\\\\OneDrive\\\\Documents\\\\GitHub\\\\steelbunch-fleetbase\\\\.apm\" -Recurse)",
       "Bash(Select-Object FullName, Length)",
-      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\25sha\\\\OneDrive\\\\Documents\\\\GitHub\\\\steelbunch-fleetbase\\\\.claude\" -Recurse)"
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\25sha\\\\OneDrive\\\\Documents\\\\GitHub\\\\steelbunch-fleetbase\\\\.claude\" -Recurse)",
+      "Bash(git config:*)",
+      "Bash(git submodule:*)"
     ]
   }
 }

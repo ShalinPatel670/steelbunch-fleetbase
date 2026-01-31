@@ -11,7 +11,11 @@
       "Bash(dir:*)",
       "Bash(ls \"C:\\\\Users\\\\25sha\\\\OneDrive\\\\Documents\\\\GitHub\\\\steelbunch-fleetbase\\\\.apm\\\\Memory\\\\Phase_01_Fleetbase_Deployment\"\" 2>/dev/null || dir \"C:Users25shaOneDriveDocumentsGitHubsteelbunch-fleetbase.apmMemoryPhase_01_Fleetbase_Deployment\"\")",
       "Bash(git mv:*)",
-      "WebFetch(domain:raw.githubusercontent.com)"
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nRemove ssm-parent from worker Dockerfiles\n\nWorkers don''t need AWS SSM integration.\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nRename railway.toml to prevent auto-override\n\nRailway was applying root config to all services.\nAPI should configure settings in dashboard.\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
     ]
   }
 }

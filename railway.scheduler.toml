@@ -1,11 +1,9 @@
 # Railway Configuration for Fleetbase Scheduler
 # Service: fleetbase-scheduler
-# Runtime: go-crond with Laravel Scheduler
 
 [build]
 builder = "DOCKERFILE"
-dockerfilePath = "docker/Dockerfile"
-dockerTarget = "scheduler-dev"
+dockerfilePath = "docker/Dockerfile.scheduler"
 
 [deploy]
 restartPolicyType = "ON_FAILURE"

@@ -1,11 +1,9 @@
 # Railway Configuration for Fleetbase Queue Worker
 # Service: fleetbase-queue
-# Runtime: Laravel Queue Worker
 
 [build]
 builder = "DOCKERFILE"
-dockerfilePath = "docker/Dockerfile"
-dockerTarget = "events-dev"
+dockerfilePath = "docker/Dockerfile.queue"
 
 [deploy]
 restartPolicyType = "ON_FAILURE"

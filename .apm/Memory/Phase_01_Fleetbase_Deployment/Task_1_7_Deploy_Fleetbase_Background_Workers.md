@@ -1,7 +1,7 @@
 ---
 agent: Agent_Infrastructure_Deploy
 task_ref: Task 1.7
-status: Partial
+status: Completed
 ad_hoc_delegation: false
 compatibility_issues: false
 important_findings: true
@@ -10,33 +10,37 @@ important_findings: true
 # Task Log: Task 1.7 - Deploy Fleetbase Background Workers
 
 ## Summary
-Analyzed Dockerfile and prepared deployment configuration for queue worker and scheduler services. Configuration documented; awaiting User to create services in Railway dashboard.
+Prepared complete deployment configuration for queue worker and scheduler services using dedicated Dockerfiles (`docker/Dockerfile.queue`, `docker/Dockerfile.scheduler`). Dashboard deployment approach selected (Option B). Both services are internal-only with no public domain.
 
 ## Details
-- Reviewed `docker/Dockerfile` and identified dedicated worker targets:
-  - `events-dev`: Queue worker with `php artisan queue:work`
-  - `scheduler-dev`: Scheduler with `go-crond --verbose root:./crontab`
-- Confirmed crontab at `docker/crontab` runs `php artisan schedule:run` every minute
-- Chose `-dev` targets over production targets (no AWS ssm-parent dependency)
-- Recommended Railway Dashboard deployment approach (no additional repo files needed)
+- Reviewed main `docker/Dockerfile` — identified multi-stage targets (`events-dev`, `scheduler-dev`) as well as dedicated Dockerfiles
+- Discovered `docker/Dockerfile.queue` (self-contained, includes `--sleep=3 --tries=3 --max-time=3600` flags) and `docker/Dockerfile.scheduler` (self-contained, installs go-crond, copies crontab)
+- Selected dedicated Dockerfiles over multi-stage targets because:
+  - Self-contained: no target selection needed in Railway
+  - `Dockerfile.queue` already has desired worker flags baked in
+  - Both use `ENTRYPOINT []` (no AWS ssm-parent dependency)
+  - Leaner images (queue image doesn't include go-crond)
+- Confirmed crontab at `docker/crontab` runs `* * * * * php /fleetbase/api/artisan schedule:run`
+- Chose Railway Dashboard deployment (Option B) — cannot use railway.toml because both services share repo root as build context, and Railway only allows one `railway.toml` per root directory
+- Both Dockerfiles require `GITHUB_AUTH_KEY` build arg for private composer packages
 
 ## Output
 
-### Service Configurations
+### Queue Worker Service (`fleetbase-queue`)
 
-**Queue Worker (`fleetbase-queue`):**
-- Source: GitHub Repo
-- Dockerfile: `docker/Dockerfile`
-- Target: `events-dev`
-- Public: No
+**Railway Dashboard Settings:**
+- Source: GitHub Repo (same repo as API)
+- Root Directory: `/` (repo root)
+- Dockerfile Path: `docker/Dockerfile.queue`
+- No start command override needed (baked into Dockerfile)
+- No public domain
+- Restart Policy: ON_FAILURE
 
-**Scheduler (`fleetbase-scheduler`):**
-- Source: GitHub Repo
-- Dockerfile: `docker/Dockerfile`
-- Target: `scheduler-dev`
-- Public: No
+**Build Args:**
+- `GITHUB_AUTH_KEY`: Same value as API service
+- `ENVIRONMENT`: `production`
 
-### Environment Variables (Both Services)
+**Environment Variables:**
 ```
 APP_NAME=Fleetbase
 APP_ENV=production
@@ -54,38 +58,43 @@ REDIS_PASSWORD=${{Redis.REDISPASSWORD}}
 LOG_CHANNEL=stderr
 ```
 
-### User Actions Required
+### Scheduler Service (`fleetbase-scheduler`)
 
-1. Create "fleetbase-queue" service from GitHub repo
-   - Set Dockerfile path: `docker/Dockerfile`
-   - Set Docker target: `events-dev`
-   - Add environment variables
-   - No public domain
+**Railway Dashboard Settings:**
+- Source: GitHub Repo (same repo as API)
+- Root Directory: `/` (repo root)
+- Dockerfile Path: `docker/Dockerfile.scheduler`
+- No start command override needed (baked into Dockerfile)
+- No public domain
+- Restart Policy: ON_FAILURE
 
-2. Create "fleetbase-scheduler" service from GitHub repo
-   - Set Dockerfile path: `docker/Dockerfile`
-   - Set Docker target: `scheduler-dev`
-   - Add environment variables
-   - No public domain
+**Build Args:**
+- `GITHUB_AUTH_KEY`: Same value as API service
+- `ENVIRONMENT`: `production`
 
-3. Verify logs after deployment
+**Environment Variables:** Same as queue worker above.
+
+### Deployment Approach
+- **Option B selected**: Railway Dashboard configuration
+- **Rationale**: Both services use repo root as build context; railway.toml files cannot be used because Railway only allows one per root directory, and the API already claims the repo root
+- No new files created in repo
 
 ### Verification Checklist
-- [ ] Queue worker logs show "Processing" or worker started message
-- [ ] Scheduler logs show go-crond running commands every minute
-- [ ] No Redis connection errors in logs
+- [ ] Queue worker logs show "Processing" or worker ready message
+- [ ] Scheduler logs show go-crond started and running cron commands every minute
+- [ ] No Redis/MySQL connection errors in either service's logs
+- [ ] Both services show "Running" status in Railway dashboard
 
 ## Issues
-None. Configuration ready; awaiting User deployment.
+None. Configuration is ready for dashboard deployment.
 
 ## Important Findings
-1. **Dockerfile has dedicated worker targets** - No need for custom start commands; use `events-dev` and `scheduler-dev` targets which have correct entrypoints baked in
-
-2. **Use `-dev` targets for Railway** - Production targets (`events`, `scheduler`) use AWS ssm-parent which requires `.ssm-parent.yaml` and AWS credentials; `-dev` variants run directly without AWS dependency
-
-3. **Crontab is already configured** - Located at `docker/crontab`, copied into image at build time, runs Laravel scheduler every minute
+1. **Dedicated Dockerfiles exist** at `docker/Dockerfile.queue` and `docker/Dockerfile.scheduler` — these are better than using multi-stage targets from the main Dockerfile because they're self-contained and don't require ssm-parent
+2. **`GITHUB_AUTH_KEY` build arg required** — both Dockerfiles use this for composer authentication; must match the value used for the API service
+3. **Crontab path correction** — the deployment strategy document references `./docker/crontab` in the start command, but inside the container the file is at `./crontab` (WORKDIR `/fleetbase/api`); the dedicated Dockerfile handles this correctly
+4. **No railway.toml files possible** for these services since they share the repo root build context with the API service
 
 ## Next Steps
-- User creates both services in Railway dashboard
-- Verify queue worker and scheduler logs
-- Report deployed status back to Manager
+- User creates both services via Railway dashboard following the step-by-step guide
+- Verify logs for both services after deployment
+- Report deployed status back to Manager Agent

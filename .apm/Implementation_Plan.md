@@ -86,7 +86,30 @@
 2. Verify Console access: Load console URL, confirm login page renders
 3. Verify Database connectivity: Console can display data (create test organization)
 4. Verify WebSocket: Real-time updates work in Console (check network tab for socket connection)
-5. **User Review Checkpoint:** Confirm Fleetbase is fully operational before proceeding to Phase 2
+5. **User Review Checkpoint:** Confirm Fleetbase is fully operational before proceeding to rebranding
+
+### Task 1.9 – Analyze Fleetbase Console Theming & Steelbunch Branding - Agent_Frontend
+**Objective:** Understand Fleetbase Console's theming/customization system and catalog Steelbunch brand assets for rebranding.
+**Output:** Documented rebranding plan with specific files to modify, color mappings, logo replacements, and text changes.
+**Guidance:** **Depends on: Task 1.8 Output.** Fleetbase Console is an Ember.js application. Steelbunch frontend is a React/Next.js application with Tailwind CSS.
+
+1. Analyze Fleetbase Console source code for theming system: look for CSS variables, SCSS themes, Ember engine configuration, brand config files, and logo/icon assets in the console directory
+2. Identify all branding touchpoints: logos (navbar, login page, favicon, loading screens), color scheme (primary, secondary, accent), fonts, and application name text references ("Fleetbase")
+3. Analyze Steelbunch's existing design system: extract colors, fonts, and logo assets from the Steelbunch codebase (check Tailwind config, global CSS, brand assets directory)
+4. Document rebranding plan: specific files to modify, color mappings (Fleetbase color → Steelbunch color), logo files to replace, text strings to change (e.g., "Fleetbase" → "Steelbunch TMS" or user-preferred name)
+5. **User Checkpoint:** Present rebranding plan for approval (naming, color choices) before implementation
+
+### Task 1.10 – Rebrand Fleetbase Console to Steelbunch - Agent_Frontend
+**Objective:** Apply Steelbunch branding to Fleetbase Console so it visually matches the Steelbunch web application.
+**Output:** Rebranded Fleetbase Console deployed with Steelbunch visual identity.
+**Guidance:** **Depends on: Task 1.9 Output.** Apply all changes identified in the theming analysis. Console must look like a native part of Steelbunch, not a third-party tool.
+
+1. Replace logos: swap Fleetbase logos with Steelbunch logos across all touchpoints (navbar, login page, favicon, loading/splash screens)
+2. Update color scheme: modify CSS variables, SCSS, or theme configuration files to use Steelbunch's color palette
+3. Update fonts: match Steelbunch's typography if different from Fleetbase defaults
+4. Update text references: replace "Fleetbase" with approved Steelbunch branding text throughout the console UI
+5. **User Action:** Deploy updated console to Railway and verify
+6. Visual verification: compare rebranded console side-by-side with Steelbunch app to ensure cohesive, consistent appearance
 
 ## Phase 2: SSO Authentication Integration
 

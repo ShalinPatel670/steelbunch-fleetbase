@@ -13,6 +13,7 @@ body[data-theme='dark'] .two-fa-enforcement-alert button#two-fa-setup-button.btn
     cursor: default;
 }
 
+.steelbunch-pagination-meta-info-wrapper.within-layout-section-header,
 .fleetbase-pagination-meta-info-wrapper.within-layout-section-header {
     display: flex;
     flex-direction: row;
@@ -66,4 +67,113 @@ body.console-admin-organizations-index-index .next-table-wrapper > table {
 
 body[data-theme='dark'] #boot-loader > .loader-container > .loading-message {
     color: #fff;
+}
+
+/* ============================================
+   Steelbunch TMS Branding Overrides
+   Override @fleetbase/ember-ui addon colors
+   from sky-blue (#3485e2) to Steelbunch Red (#FF3B30)
+   ============================================ */
+
+/* Primary buttons */
+.btn.btn-primary,
+body[data-theme='dark'] .btn.btn-primary {
+    background-color: #FF3B30 !important;
+    border-color: #FF3B30 !important;
+}
+.btn.btn-primary:hover,
+body[data-theme='dark'] .btn.btn-primary:hover {
+    background-color: #dc2626 !important;
+    border-color: #dc2626 !important;
+}
+.btn.btn-primary:active,
+.btn.btn-primary:focus,
+body[data-theme='dark'] .btn.btn-primary:active,
+body[data-theme='dark'] .btn.btn-primary:focus {
+    background-color: #b91c1c !important;
+    border-color: #b91c1c !important;
+}
+
+/* Links and text with blue/sky colors */
+a.text-sky-500,
+.text-sky-500 {
+    color: #FF3B30 !important;
+}
+a.text-sky-400,
+.text-sky-400,
+a:hover.text-sky-400 {
+    color: #dc2626 !important;
+}
+
+/* Focus rings */
+.focus\:ring-sky-500:focus,
+.focus\:border-sky-500:focus {
+    --tw-ring-color: #FF3B30;
+    border-color: #FF3B30;
+}
+
+/* Checkboxes and toggles */
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+    background-color: #FF3B30;
+    border-color: #FF3B30;
+}
+input[type="checkbox"]:checked:hover,
+input[type="radio"]:checked:hover {
+    background-color: #dc2626;
+    border-color: #dc2626;
+}
+
+/* Toggle switches from ember-ui */
+.toggle-switch .toggle-on,
+.ember-toggle .toggle-on {
+    background-color: #FF3B30 !important;
+}
+
+/* Active/selected sidebar items */
+.next-sidebar-item.active,
+.next-sidebar-item:hover {
+    border-left-color: #FF3B30;
+}
+
+/* Focus outline for inputs */
+input:focus,
+select:focus,
+textarea:focus {
+    --tw-ring-color: rgba(255, 59, 48, 0.5);
+    border-color: #FF3B30;
+}
+
+/* Badge/tag primary colors */
+.badge-primary,
+.tag-primary {
+    background-color: #FF3B30;
+}
+
+/* Override blue info blocks to use Steelbunch styling in dark mode */
+body[data-theme='dark'] .bg-blue-200 {
+    background-color: rgba(255, 59, 48, 0.15);
+}
+body[data-theme='dark'] .text-blue-900 {
+    color: #fca5a5;
+}
+body[data-theme='dark'] .text-blue-500 {
+    color: #FF3B30;
+}
+body[data-theme='dark'] .text-blue-400 {
+    color: #FF3B30;
+}
+body[data-theme='dark'] .hover\:text-blue-300:hover {
+    color: #dc2626;
+}
+
+/* Force dark mode background */
+body[data-theme='dark'] {
+    background-color: #05060A;
+}
+
+/* Font family override for the entire app */
+body,
+html {
+    font-family: 'Host Grotesk', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }

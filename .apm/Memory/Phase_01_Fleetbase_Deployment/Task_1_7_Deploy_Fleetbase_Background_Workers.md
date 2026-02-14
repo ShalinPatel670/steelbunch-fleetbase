@@ -10,91 +10,64 @@ important_findings: true
 # Task Log: Task 1.7 - Deploy Fleetbase Background Workers
 
 ## Summary
-Prepared complete deployment configuration for queue worker and scheduler services using dedicated Dockerfiles (`docker/Dockerfile.queue`, `docker/Dockerfile.scheduler`). Dashboard deployment approach selected (Option B). Both services are internal-only with no public domain.
+Successfully deployed queue worker and scheduler services to Railway. Both services are running and verified. Scheduler executes Laravel scheduled tasks every minute; queue worker is connected and listening for jobs.
 
 ## Details
-- Reviewed main `docker/Dockerfile` — identified multi-stage targets (`events-dev`, `scheduler-dev`) as well as dedicated Dockerfiles
-- Discovered `docker/Dockerfile.queue` (self-contained, includes `--sleep=3 --tries=3 --max-time=3600` flags) and `docker/Dockerfile.scheduler` (self-contained, installs go-crond, copies crontab)
-- Selected dedicated Dockerfiles over multi-stage targets because:
-  - Self-contained: no target selection needed in Railway
-  - `Dockerfile.queue` already has desired worker flags baked in
-  - Both use `ENTRYPOINT []` (no AWS ssm-parent dependency)
-  - Leaner images (queue image doesn't include go-crond)
-- Confirmed crontab at `docker/crontab` runs `* * * * * php /fleetbase/api/artisan schedule:run`
-- Chose Railway Dashboard deployment (Option B) — cannot use railway.toml because both services share repo root as build context, and Railway only allows one `railway.toml` per root directory
-- Both Dockerfiles require `GITHUB_AUTH_KEY` build arg for private composer packages
+- Discovered dedicated Dockerfiles (`docker/Dockerfile.queue`, `docker/Dockerfile.scheduler`) — self-contained, no ssm-parent dependency, preferred over multi-stage targets
+- Deployed both services via Railway Dashboard (Option B) — railway.toml approach not viable since both services share repo root build context
+- `GITHUB_AUTH_KEY` build arg was NOT required — both services built and deployed successfully without it (composer packages are public or cached)
+- Resolved API downtime during task: `railway.toml` had been renamed to `api.railway.toml` previously; user updated API service's config-as-code path to `api.railway.toml` in Railway dashboard, restoring the API
+- API showed transient "unknown error" messages on startup (FrankenPHP/Octane warmup), but health check passes and console connects without errors
 
 ## Output
 
-### Queue Worker Service (`fleetbase-queue`)
+### Services Deployed
 
-**Railway Dashboard Settings:**
-- Source: GitHub Repo (same repo as API)
-- Root Directory: `/` (repo root)
-- Dockerfile Path: `docker/Dockerfile.queue`
-- No start command override needed (baked into Dockerfile)
-- No public domain
-- Restart Policy: ON_FAILURE
+**Queue Worker (`fleetbase-queue`):**
+- Dockerfile: `docker/Dockerfile.queue`
+- Status: Running (network flow active, connected to Redis/MySQL)
+- No public domain (internal worker)
+- Start command baked into Dockerfile: `php artisan queue:work --sleep=3 --tries=3 --max-time=3600`
 
-**Build Args:**
-- `GITHUB_AUTH_KEY`: Same value as API service
-- `ENVIRONMENT`: `production`
+**Scheduler (`fleetbase-scheduler`):**
+- Dockerfile: `docker/Dockerfile.scheduler`
+- Status: Running and verified
+- Cron executing every minute with `exitCode=0, result=success`
+- Scheduled tasks confirmed running: `fleetops:dispatch-orders`, `fleetops:dispatch-adhoc`, `fleetops:update-estimations`, `storefront:notify-order-nearby`
 
-**Environment Variables:**
+### Environment Variables (Both Services)
 ```
 APP_NAME=Fleetbase
 APP_ENV=production
 APP_KEY=${{fleetbase-api.APP_KEY}}
 APP_DEBUG=false
-DATABASE_URL=${{MySQL.DATABASE_URL}}
+DATABASE_URL=${{fleetbase-mysql.MYSQL_URL}}
 DB_CONNECTION=mysql
 QUEUE_CONNECTION=redis
 CACHE_DRIVER=redis
-CACHE_URL=${{Redis.REDIS_URL}}
-REDIS_URL=${{Redis.REDIS_URL}}
-REDIS_HOST=${{Redis.REDISHOST}}
-REDIS_PORT=${{Redis.REDISPORT}}
-REDIS_PASSWORD=${{Redis.REDISPASSWORD}}
+CACHE_URL=${{fleetbase-redis.REDIS_URL}}
+REDIS_URL=${{fleetbase-redis.REDIS_URL}}
+REDIS_HOST=${{fleetbase-redis.REDISHOST}}
+REDIS_PORT=${{fleetbase-redis.REDISPORT}}
+REDIS_PASSWORD=${{fleetbase-redis.REDISPASSWORD}}
 LOG_CHANNEL=stderr
 ```
 
-### Scheduler Service (`fleetbase-scheduler`)
-
-**Railway Dashboard Settings:**
-- Source: GitHub Repo (same repo as API)
-- Root Directory: `/` (repo root)
-- Dockerfile Path: `docker/Dockerfile.scheduler`
-- No start command override needed (baked into Dockerfile)
-- No public domain
-- Restart Policy: ON_FAILURE
-
-**Build Args:**
-- `GITHUB_AUTH_KEY`: Same value as API service
-- `ENVIRONMENT`: `production`
-
-**Environment Variables:** Same as queue worker above.
-
 ### Deployment Approach
-- **Option B selected**: Railway Dashboard configuration
-- **Rationale**: Both services use repo root as build context; railway.toml files cannot be used because Railway only allows one per root directory, and the API already claims the repo root
-- No new files created in repo
-
-### Verification Checklist
-- [ ] Queue worker logs show "Processing" or worker ready message
-- [ ] Scheduler logs show go-crond started and running cron commands every minute
-- [ ] No Redis/MySQL connection errors in either service's logs
-- [ ] Both services show "Running" status in Railway dashboard
+- **Option B (Railway Dashboard)** selected and executed
+- No new repo files created for these services
+- Both configured directly via Railway dashboard: GitHub repo source, Dockerfile path, environment variables
 
 ## Issues
-None. Configuration is ready for dashboard deployment.
+- API service went down during task due to missing `railway.toml` (had been renamed to `api.railway.toml`). Resolved by user updating config-as-code path in Railway dashboard to point to `api.railway.toml`.
+- API showed transient "unknown error" burst on startup — confirmed to be FrankenPHP/Octane warmup behavior, not a persistent issue.
 
 ## Important Findings
-1. **Dedicated Dockerfiles exist** at `docker/Dockerfile.queue` and `docker/Dockerfile.scheduler` — these are better than using multi-stage targets from the main Dockerfile because they're self-contained and don't require ssm-parent
-2. **`GITHUB_AUTH_KEY` build arg required** — both Dockerfiles use this for composer authentication; must match the value used for the API service
-3. **Crontab path correction** — the deployment strategy document references `./docker/crontab` in the start command, but inside the container the file is at `./crontab` (WORKDIR `/fleetbase/api`); the dedicated Dockerfile handles this correctly
-4. **No railway.toml files possible** for these services since they share the repo root build context with the API service
+1. **Dedicated Dockerfiles preferred** — `docker/Dockerfile.queue` and `docker/Dockerfile.scheduler` are self-contained and don't require ssm-parent, making them ideal for Railway
+2. **GITHUB_AUTH_KEY not required** — both services built without this build arg, indicating composer packages are publicly accessible
+3. **API config-as-code path** — API service uses `api.railway.toml` (not `railway.toml`) to avoid Railway applying root config to all services sharing the repo root
+4. **Transient startup errors are normal** — FrankenPHP/Octane shows "unknown error" burst during worker warmup; resolves within seconds
 
 ## Next Steps
-- User creates both services via Railway dashboard following the step-by-step guide
-- Verify logs for both services after deployment
-- Report deployed status back to Manager Agent
+- None — both background worker services are deployed and verified
+- Queue worker will begin processing jobs as they are dispatched by the application

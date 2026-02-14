@@ -37,7 +37,7 @@
                 @disabled={{not this.isReadyToSubmit}}
                 @onClick={{perform this.verifyCode}}
             />
-            <a href="javascript:;" {{on "click" this.onDidntReceiveCode}} class="text-sm text-blue-400 hover:text-blue-300">{{t "auth.verification.didnt-receive-a-code"}}</a>
+            <a href="javascript:;" {{on "click" this.onDidntReceiveCode}} class="text-sm text-steelbunch-red hover:text-red-400">{{t "auth.verification.didnt-receive-a-code"}}</a>
         </div>
 
         {{#if this.stillWaiting}}

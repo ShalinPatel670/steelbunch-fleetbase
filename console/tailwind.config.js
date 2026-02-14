@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 module.exports = {
     darkMode: ['class', '[data-theme="dark"]'],
     content: {
@@ -19,6 +21,9 @@ module.exports = {
     ],
     theme: {
         extend: {
+            fontFamily: {
+                sans: ['"Host Grotesk"', 'Inter', ...defaultTheme.fontFamily.sans],
+            },
             gridTemplateColumns: {
                 span: ['span 1', 'span 2', 'span 3', 'span 4', 'span 5', 'span 6', 'span 7', 'span 8', 'span 9', 'span 10', 'span 11', 'span 12'],
             },
@@ -26,16 +31,19 @@ module.exports = {
                 DEFAULT: 'transparent',
             },
             colors: {
+                'steelbunch-red': '#FF3B30',
+                'steelbunch-green': '#3DD68C',
+                'steelbunch-bg': '#05060A',
                 sky: {
-                    100: '#e6f0fb',
-                    200: '#bad5f5',
-                    300: '#8dbbef',
-                    400: '#61a0e8',
-                    500: '#3485e2',
-                    600: '#1c6cc7',
-                    700: '#16539a',
-                    800: '#103b6d',
-                    900: '#092341',
+                    100: '#fee2e2',
+                    200: '#fecaca',
+                    300: '#fca5a5',
+                    400: '#dc2626',
+                    500: '#FF3B30',
+                    600: '#b91c1c',
+                    700: '#991b1b',
+                    800: '#7f1d1d',
+                    900: '#450a0a',
                 },
                 nightsky: {
                     100: '#0d2f57',

@@ -114,7 +114,8 @@ export default class ApplicationRoute extends Route {
             bodyClassNames.pushObject(['is-electron']);
         }
 
-        this.theme.initialize({ bodyClassNames, theme: this.defaultTheme });
+        // Force dark mode for Steelbunch TMS branding
+        this.theme.initialize({ bodyClassNames, theme: 'dark' });
     }
 
     /**

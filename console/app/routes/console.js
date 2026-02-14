@@ -2,6 +2,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import removeBootLoader from '../utils/remove-boot-loader';
+import applySteelbunchBranding from '../utils/apply-steelbunch-branding';
 import '@fleetbase/leaflet-routing-machine';
 
 export default class ConsoleRoute extends Route {
@@ -51,12 +52,13 @@ export default class ConsoleRoute extends Route {
     }
 
     /**
-     * Get the branding settings.
+     * Get the branding settings and apply Steelbunch TMS defaults.
      *
      * @return {BrandModel}
      * @memberof ConsoleRoute
      */
-    model() {
-        return this.store.findRecord('brand', 1);
+    async model() {
+        const brand = await this.store.findRecord('brand', 1);
+        return applySteelbunchBranding(brand);
     }
 }

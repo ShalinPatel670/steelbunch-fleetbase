@@ -71,108 +71,449 @@ body[data-theme='dark'] #boot-loader > .loader-container > .loading-message {
 
 /* ============================================
    Steelbunch TMS Branding Overrides
-   Override @fleetbase/ember-ui addon colors
-   from sky-blue (#3485e2) to Steelbunch Red (#FF3B30)
+   Comprehensive override of @fleetbase/ember-ui addon colors.
+   The addon pre-compiles its CSS with blue sky values (#3485e2).
+   These overrides remap ALL blue/sky to Steelbunch Red (#FF3B30).
    ============================================ */
 
-/* Primary buttons */
+/*
+ * COLOR MAP:
+ * sky-500 / blue-500 (#3485e2 / #3b82f6) → #FF3B30 (steelbunch-red)
+ * sky-400 / blue-400 (#61a0e8 / #60a5fa) → #dc2626 (hover)
+ * sky-600 / blue-600 (#1c6cc7 / #2563eb) → #b91c1c (active)
+ * sky-300 / blue-300                      → #fca5a5 (light)
+ * sky-100 / blue-100                      → #fee2e2 (lightest)
+ * sky-200 / blue-200                      → #fecaca
+ * sky-700 / blue-700                      → #991b1b
+ * sky-800 / blue-800                      → #7f1d1d
+ * sky-900 / blue-900                      → #450a0a
+ * green-500                               → #3DD68C (steelbunch-green)
+ */
+
+/* -------------------------------------------
+   1. PRIMARY BUTTONS (button.css)
+   ------------------------------------------- */
 .btn.btn-primary,
-body[data-theme='dark'] .btn.btn-primary {
+.btn.fb-button-primary,
+a.btn.btn-primary,
+a.btn.fb-button-primary,
+.fc-button.btn-primary,
+.ui-full-calendar .fc-button.btn-primary,
+body[data-theme='dark'] .btn.btn-primary,
+body[data-theme='dark'] .btn.fb-button-primary {
     background-color: #FF3B30 !important;
     border-color: #FF3B30 !important;
+    color: #fff !important;
 }
-.btn.btn-primary:hover,
-body[data-theme='dark'] .btn.btn-primary:hover {
+.btn.btn-primary:hover:not(:disabled),
+.btn.fb-button-primary:hover:not(:disabled),
+a.btn.btn-primary:hover:not(:disabled),
+a.btn.fb-button-primary:hover:not(:disabled),
+.fc-button.btn-primary:hover:not(:disabled),
+body[data-theme='dark'] .btn.btn-primary:hover:not(:disabled),
+body[data-theme='dark'] .btn.fb-button-primary:hover:not(:disabled) {
     background-color: #dc2626 !important;
     border-color: #dc2626 !important;
 }
-.btn.btn-primary:active,
 .btn.btn-primary:focus,
+.btn.fb-button-primary:focus,
+a.btn.btn-primary:focus,
+body[data-theme='dark'] .btn.btn-primary:focus,
+body[data-theme='dark'] .btn.fb-button-primary:focus {
+    outline: 0 !important;
+    border-color: #b91c1c !important;
+}
+.btn.btn-primary:active,
+.btn.fb-button-primary:active,
+a.btn.btn-primary:active,
 body[data-theme='dark'] .btn.btn-primary:active,
-body[data-theme='dark'] .btn.btn-primary:focus {
+body[data-theme='dark'] .btn.fb-button-primary:active {
     background-color: #b91c1c !important;
     border-color: #b91c1c !important;
 }
 
-/* Links and text with blue/sky colors */
-a.text-sky-500,
-.text-sky-500 {
+/* -------------------------------------------
+   2. SECONDARY BUTTONS (button.css)
+   ------------------------------------------- */
+.btn.btn-secondary {
     color: #FF3B30 !important;
+    background-color: #fee2e2 !important;
+    border-color: #fca5a5 !important;
 }
-a.text-sky-400,
-.text-sky-400,
-a:hover.text-sky-400 {
-    color: #dc2626 !important;
+body[data-theme='dark'] .btn.btn-secondary {
+    color: #fca5a5 !important;
+    background-color: #450a0a !important;
+    border-color: #7f1d1d !important;
+}
+.btn.btn-secondary:hover:not(:disabled) {
+    background-color: #fff1f2 !important;
+}
+body[data-theme='dark'] .btn.btn-secondary:hover:not(:disabled) {
+    background-color: #501010 !important;
+}
+.btn.btn-secondary:active {
+    background-color: #fecaca !important;
 }
 
-/* Focus rings */
-.focus\:ring-sky-500:focus,
-.focus\:border-sky-500:focus {
-    --tw-ring-color: #FF3B30;
-    border-color: #FF3B30;
+/* -------------------------------------------
+   3. INTEGRATED VENDOR BUTTONS (button.css)
+   ------------------------------------------- */
+button.integrated-vendor-button.selected,
+body[data-theme='dark'] .integrated-vendor-button.selected {
+    border-color: #FF3B30 !important;
+    outline-color: #FF3B30 !important;
 }
 
-/* Checkboxes and toggles */
+/* -------------------------------------------
+   4. INPUT & TAG COMPONENTS (input.css)
+   ------------------------------------------- */
+.emberTagInput .emberTagInput-tag {
+    background-color: #FF3B30 !important;
+}
+.fleetbase-console .form-checkbox[data-checked],
+.form-checkbox:checked {
+    background-color: #FF3B30 !important;
+    border-color: #FF3B30 !important;
+}
 input[type="checkbox"]:checked,
 input[type="radio"]:checked {
-    background-color: #FF3B30;
-    border-color: #FF3B30;
+    background-color: #FF3B30 !important;
+    border-color: #FF3B30 !important;
 }
 input[type="checkbox"]:checked:hover,
 input[type="radio"]:checked:hover {
-    background-color: #dc2626;
-    border-color: #dc2626;
+    background-color: #dc2626 !important;
+    border-color: #dc2626 !important;
 }
-
-/* Toggle switches from ember-ui */
-.toggle-switch .toggle-on,
-.ember-toggle .toggle-on {
+.coordinates-input-zoom-controls button:hover {
     background-color: #FF3B30 !important;
 }
 
-/* Active/selected sidebar items */
-.next-sidebar-item.active,
-.next-sidebar-item:hover {
-    border-left-color: #FF3B30;
-}
-
-/* Focus outline for inputs */
+/* Input focus states */
 input:focus,
 select:focus,
-textarea:focus {
-    --tw-ring-color: rgba(255, 59, 48, 0.5);
-    border-color: #FF3B30;
+textarea:focus,
+.form-input:focus,
+.form-select:focus {
+    --tw-ring-color: rgba(255, 59, 48, 0.5) !important;
+    border-color: #FF3B30 !important;
 }
 
-/* Badge/tag primary colors */
+/* Power-select dark theme */
+body[data-theme='dark'] .ember-power-select-search-input:focus {
+    border-color: #450a0a !important;
+}
+
+/* -------------------------------------------
+   5. CALENDAR (calendar.css)
+   ------------------------------------------- */
+.fleetbase-calendar .fleetbase-calendar-selection-header {
+    background-color: #FF3B30 !important;
+}
+
+/* -------------------------------------------
+   6. KANBAN (kanban.css)
+   ------------------------------------------- */
+.kanban-column .drop-indicator,
+.kanban-drag-over {
+    border-color: #FF3B30 !important;
+}
+.ring-blue-500,
+.focus\:ring-blue-500:focus {
+    --tw-ring-color: #FF3B30 !important;
+}
+
+/* -------------------------------------------
+   7. TABLE (table.css)
+   ------------------------------------------- */
+.next-table-wrapper th.sortable .sort-indicator {
+    color: #FF3B30 !important;
+}
+.next-table-wrapper tr.selected,
+.next-table-wrapper tr.is-selected {
+    background-color: rgba(255, 59, 48, 0.1) !important;
+}
+.sort-priority-badge {
+    background-color: #dc2626 !important;
+    color: #fff !important;
+}
+
+/* -------------------------------------------
+   8. TABLE CELLS (table-cells.css)
+   ------------------------------------------- */
+.next-table-wrapper a,
+.cell-link {
+    color: #FF3B30 !important;
+}
+.next-table-wrapper a:hover,
+.cell-link:hover {
+    color: #dc2626 !important;
+}
+
+/* -------------------------------------------
+   9. PAGINATION (pagination.css)
+   ------------------------------------------- */
+.pagination .active a,
+.pagination .active span {
+    background-color: #FF3B30 !important;
+    border-color: #FF3B30 !important;
+}
+.pagination a:focus {
+    border-color: #fca5a5 !important;
+    box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.25) !important;
+}
+
+/* -------------------------------------------
+   10. TABS & TAB NAVIGATION (tabs.css, tab-navigation.css)
+   ------------------------------------------- */
+.tab-nav .tab-nav-item.active,
+.tab-nav .tab-nav-item.is-active {
+    border-bottom-color: #FF3B30 !important;
+    color: #FF3B30 !important;
+}
+.pane-tab.active,
+.pane-tab.is-active,
+.pill-tab.active {
+    background-color: #FF3B30 !important;
+    border-color: #dc2626 !important;
+    color: #fff !important;
+}
+/* Tab navigation active indicator (theme() references in addon) */
+.next-tab-nav .active::after,
+.next-tab-nav .is-active::after {
+    background-color: #FF3B30 !important;
+}
+body[data-theme='dark'] .next-tab-nav .active::after,
+body[data-theme='dark'] .next-tab-nav .is-active::after {
+    background-color: #dc2626 !important;
+}
+
+/* -------------------------------------------
+   11. BADGES & STATUS (badge.css)
+   ------------------------------------------- */
+.status-badge.sky-status-badge,
+.status-badge.wont-fix-status-badge {
+    background-color: #7f1d1d !important;
+    border-color: #991b1b !important;
+    color: #fee2e2 !important;
+}
+.status-badge.blue-status-badge {
+    background-color: #7f1d1d !important;
+    border-color: #991b1b !important;
+    color: #fee2e2 !important;
+}
 .badge-primary,
 .tag-primary {
-    background-color: #FF3B30;
+    background-color: #FF3B30 !important;
 }
 
-/* Override blue info blocks to use Steelbunch styling in dark mode */
-body[data-theme='dark'] .bg-blue-200 {
-    background-color: rgba(255, 59, 48, 0.15);
-}
-body[data-theme='dark'] .text-blue-900 {
-    color: #fca5a5;
-}
-body[data-theme='dark'] .text-blue-500 {
-    color: #FF3B30;
-}
-body[data-theme='dark'] .text-blue-400 {
-    color: #FF3B30;
-}
-body[data-theme='dark'] .hover\:text-blue-300:hover {
-    color: #dc2626;
+/* -------------------------------------------
+   12. DRAWER (drawer.css)
+   ------------------------------------------- */
+.drawer-gutter:hover,
+.drawer-gutter.is-resizing {
+    border-color: #FF3B30 !important;
 }
 
-/* Force dark mode background */
+/* -------------------------------------------
+   13. QUERY BUILDER (query-builder.css)
+   ------------------------------------------- */
+.query-builder .selected,
+.query-builder .is-active {
+    border-color: #FF3B30 !important;
+}
+.query-builder .qb-rule.active,
+.query-builder .qb-group.active {
+    border-color: #FF3B30 !important;
+    background-color: rgba(255, 59, 48, 0.05) !important;
+}
+body[data-theme='dark'] .query-builder .qb-rule.active,
+body[data-theme='dark'] .query-builder .qb-group.active {
+    border-color: #FF3B30 !important;
+    background-color: rgba(255, 59, 48, 0.1) !important;
+}
+
+/* -------------------------------------------
+   14. REPORT BUILDER (report-builder.css)
+   ------------------------------------------- */
+.report-builder .selected-field,
+.report-builder .active-field {
+    border-color: #FF3B30 !important;
+    --tw-ring-color: #FF3B30 !important;
+}
+
+/* -------------------------------------------
+   15. HORIZONTAL ROUTE (horizontal-route.css)
+   ------------------------------------------- */
+.horizontal-route {
+    border-top-color: #fca5a5 !important;
+}
+.horizontal-route .route-bullet {
+    color: #dc2626 !important;
+}
+.horizontal-route .destination-notch {
+    background-color: #b91c1c !important;
+}
+
+/* -------------------------------------------
+   16. ACTIVITY LOG (activity-log.css)
+   ------------------------------------------- */
+.highlight-blue {
+    background-color: #fee2e2 !important;
+    border-color: #fecaca !important;
+    color: #7f1d1d !important;
+}
+body[data-theme='dark'] .highlight-blue {
+    background-color: #450a0a !important;
+    border-color: #991b1b !important;
+    color: #fee2e2 !important;
+}
+
+/* -------------------------------------------
+   17. OTP INPUT (otp-input.css)
+   ------------------------------------------- */
+.otp-input input {
+    border-color: #FF3B30 !important;
+}
+.otp-input input:focus {
+    border-color: #dc2626 !important;
+    box-shadow: 0 0 0 2px rgba(255, 59, 48, 0.3) !important;
+}
+
+/* -------------------------------------------
+   18. COUNTDOWN (countdown.css)
+   ------------------------------------------- */
+.countdown-timer {
+    color: #FF3B30 !important;
+}
+.countdown-timer .progress-ring circle.progress {
+    stroke: #FF3B30 !important;
+}
+
+/* -------------------------------------------
+   19. EMBER MODEL SELECT / SPINNER (ember-model-select.css)
+   ------------------------------------------- */
+.ember-model-select .loading-spinner,
+.model-select-spinner {
+    border-top-color: #FF3B30 !important;
+}
+
+/* -------------------------------------------
+   20. TIP TAP EDITOR (tip-tap-editor.css)
+   ------------------------------------------- */
+.tiptap-editor .column-resize-handle {
+    background-color: #dc2626 !important;
+}
+
+/* -------------------------------------------
+   21. TOGGLE SWITCHES
+   ------------------------------------------- */
+.toggle-switch .toggle-on,
+.ember-toggle .toggle-on,
+.x-toggle-btn.checked,
+.x-toggle .x-toggle-btn::after {
+    background-color: #FF3B30 !important;
+}
+
+/* -------------------------------------------
+   22. SIDEBAR & NAVIGATION (next.css, layout)
+   ------------------------------------------- */
+.next-sidebar-item.active,
+.next-sidebar-item:hover {
+    border-left-color: #FF3B30 !important;
+}
+.next-map-container-view-switch > button.active {
+    background-color: #FF3B30 !important;
+    color: #fff !important;
+}
+
+/* -------------------------------------------
+   23. GLOBAL UTILITY CLASS OVERRIDES
+   Catch-all for any remaining sky/blue utilities
+   used directly in addon templates
+   ------------------------------------------- */
+.bg-sky-500 { background-color: #FF3B30 !important; }
+.bg-sky-400 { background-color: #dc2626 !important; }
+.bg-sky-600 { background-color: #b91c1c !important; }
+.bg-sky-300 { background-color: #fca5a5 !important; }
+.bg-sky-100 { background-color: #fee2e2 !important; }
+.bg-sky-200 { background-color: #fecaca !important; }
+.bg-sky-700 { background-color: #991b1b !important; }
+.bg-sky-800 { background-color: #7f1d1d !important; }
+.bg-sky-900 { background-color: #450a0a !important; }
+
+.text-sky-500 { color: #FF3B30 !important; }
+.text-sky-400 { color: #dc2626 !important; }
+.text-sky-600 { color: #b91c1c !important; }
+.text-sky-100 { color: #fee2e2 !important; }
+.text-sky-200 { color: #fecaca !important; }
+.text-sky-300 { color: #fca5a5 !important; }
+
+.border-sky-500 { border-color: #FF3B30 !important; }
+.border-sky-400 { border-color: #dc2626 !important; }
+.border-sky-600 { border-color: #b91c1c !important; }
+.border-sky-700 { border-color: #991b1b !important; }
+
+.bg-blue-500 { background-color: #FF3B30 !important; }
+.bg-blue-400 { background-color: #dc2626 !important; }
+.bg-blue-600 { background-color: #b91c1c !important; }
+.bg-blue-300 { background-color: #fca5a5 !important; }
+.bg-blue-100 { background-color: #fee2e2 !important; }
+.bg-blue-200 { background-color: #fecaca !important; }
+.bg-blue-50 { background-color: #fff1f2 !important; }
+.bg-blue-700 { background-color: #991b1b !important; }
+.bg-blue-800 { background-color: #7f1d1d !important; }
+.bg-blue-900 { background-color: #450a0a !important; }
+
+.text-blue-500 { color: #FF3B30 !important; }
+.text-blue-400 { color: #dc2626 !important; }
+.text-blue-600 { color: #b91c1c !important; }
+.text-blue-700 { color: #991b1b !important; }
+.text-blue-100 { color: #fee2e2 !important; }
+.text-blue-200 { color: #fecaca !important; }
+.text-blue-800 { color: #7f1d1d !important; }
+.text-blue-900 { color: #450a0a !important; }
+
+.border-blue-500 { border-color: #FF3B30 !important; }
+.border-blue-400 { border-color: #dc2626 !important; }
+.border-blue-600 { border-color: #b91c1c !important; }
+.border-blue-300 { border-color: #fca5a5 !important; }
+.border-blue-900 { border-color: #450a0a !important; }
+
+.ring-blue-500 { --tw-ring-color: #FF3B30 !important; }
+.ring-blue-400 { --tw-ring-color: #dc2626 !important; }
+.outline-blue-500 { outline-color: #FF3B30 !important; }
+
+.hover\:bg-blue-50:hover { background-color: #fff1f2 !important; }
+.hover\:bg-sky-400:hover { background-color: #dc2626 !important; }
+.hover\:text-sky-400:hover { color: #dc2626 !important; }
+.hover\:text-blue-300:hover { color: #fca5a5 !important; }
+.hover\:border-blue-500:hover { border-color: #FF3B30 !important; }
+
+.focus\:ring-sky-500:focus { --tw-ring-color: #FF3B30 !important; }
+.focus\:ring-blue-500:focus { --tw-ring-color: #FF3B30 !important; }
+.focus\:border-sky-500:focus { border-color: #FF3B30 !important; }
+.focus\:border-blue-500:focus { border-color: #FF3B30 !important; }
+
+/* Dark mode variants */
+.dark\:bg-blue-900 { background-color: #450a0a !important; }
+.dark\:bg-blue-800 { background-color: #7f1d1d !important; }
+.dark\:border-blue-700 { border-color: #991b1b !important; }
+.dark\:border-blue-600 { border-color: #b91c1c !important; }
+.dark\:text-blue-400 { color: #dc2626 !important; }
+.dark\:text-blue-100 { color: #fee2e2 !important; }
+.dark\:text-blue-200 { color: #fecaca !important; }
+
+/* -------------------------------------------
+   24. FORCE DARK MODE BACKGROUND
+   ------------------------------------------- */
 body[data-theme='dark'] {
     background-color: #05060A;
 }
 
-/* Font family override for the entire app */
+/* -------------------------------------------
+   25. FONT FAMILY OVERRIDE
+   ------------------------------------------- */
 body,
 html {
     font-family: 'Host Grotesk', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;

@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import applySteelbunchBranding from '../../utils/apply-steelbunch-branding';
 
 export default class OnboardIndexRoute extends Route {
     @service store;
@@ -16,7 +17,8 @@ export default class OnboardIndexRoute extends Route {
         this.orchestrator.start(null, { resume: true });
     }
 
-    model() {
-        return this.store.findRecord('brand', 1);
+    async model() {
+        const brand = await this.store.findRecord('brand', 1);
+        return applySteelbunchBranding(brand);
     }
 }

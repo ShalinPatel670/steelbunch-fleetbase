@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import applySteelbunchBranding from '../../utils/apply-steelbunch-branding';
 
 export default class AuthResetPasswordRoute extends Route {
     @service store;
@@ -20,6 +21,7 @@ export default class AuthResetPasswordRoute extends Route {
         }
 
         // set brand to controller
-        controller.brand = await this.store.findRecord('brand', 1);
+        const brand = await this.store.findRecord('brand', 1);
+        controller.brand = applySteelbunchBranding(brand);
     }
 }

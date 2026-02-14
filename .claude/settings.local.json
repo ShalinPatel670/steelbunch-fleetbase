@@ -18,7 +18,10 @@
       "Bash(git commit -m \"$\\(cat <<''EOF''\nRename railway.toml to prevent auto-override\n\nRailway was applying root config to all services.\nAPI should configure settings in dashboard.\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
       "Bash(xargs:*)",
       "Bash(ls:*)",
-      "Bash(convert:*)"
+      "Bash(convert:*)",
+      "Bash(railway service:*)",
+      "Bash(railway variables:*)",
+      "Bash(railway up --help:*)"
     ]
   }
 }
